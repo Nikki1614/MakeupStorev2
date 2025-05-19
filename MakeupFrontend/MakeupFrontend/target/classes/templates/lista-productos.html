@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<h1>Inventario de Maquillaje</h1>
+
+<div style="text-align: center; margin-bottom: 20px;">
+    <a href="/productos/crear">
+        <button class="crear">➕ Crear Producto</button>
+    </a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Cantidad</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="producto : ${productos}">
+        <td th:text="${producto.id}">ID</td>
+        <td th:text="${producto.productName}">Nombre</td>
+        <td th:text="${producto.category}">Categoría</td>
+        <td th:text="${producto.makeupProductQuantity}">Cantidad</td>
+        <td>
+            <a th:href="@{'/productos/editar/' + ${producto.id}}">
+                <button class="editar">✏️ Editar</button>
+            </a>
+            <a th:href="@{'/productos/eliminar/' + ${producto.id}}">
+                <button class="eliminar">🗑️ Eliminar</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="pagination" style="text-align: center; margin-top: 20px;">
+    <span th:if="${currentPage > 0}">
+        <a th:href="@{|/productos?page=${currentPage - 1}|}">⬅️ Anterior</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+          th:classappend="${i == currentPage} ? 'current'">
+        <a th:href="@{|/productos?page=${i}|}" th:text="${i + 1}">1</a>
+    </span>
+
+    <span th:if="${currentPage < totalPages - 1}">
+        <a th:href="@{|/productos?page=${currentPage + 1}|}">Siguiente ➡️</a>
+    </span>
+</div>
+
+</body>
+</html>
+
